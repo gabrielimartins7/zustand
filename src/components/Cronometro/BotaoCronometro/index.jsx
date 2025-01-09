@@ -9,13 +9,28 @@ import audioPauseSom from "/src/assets/sons/pause.mp3";
 export default function BotaoCronometro() {
   const intervaloId = useCronometroStore((estado) => estado.intervaloId);
   const iniciarCronometro = useCronometroStore((estado) => estado.iniciarCronometro);
+  const pausarCronometro = useCronometroStore((estado) => estado.pausarCronometro);
+
+  const audioPlay = new Audio(audioPlaySom);
+  const audioPause = new Audio(audioPauseSom);
+
+  function iniciarOuPausar() {
+    if (!intervaloId) {
+      audioPlay.play();
+      iniciarCronometro();
+    } else {
+      audioPause.play();
+      pausarCronometro();
+    }
+  }
+
 
   const textoIniciarOuPausar = intervaloId ? "Pausar" : "Começar";
   const iconeIniciarOuPausar = intervaloId ? pauseImg : play_arrowImg;
 
   return (
     <div className={styles["cronometer__primary-button-wrapper"]}>
-      <button className={styles["cronometer__primary-button"]} onClick={iniciarCronometro}>
+      <button className={styles["cronometer__primary-button"]} onClick={iniciarOuPausar}>
         <img
           className={styles["cronometer__primary-button-icon"]}
           src={iconeIniciarOuPausar}
